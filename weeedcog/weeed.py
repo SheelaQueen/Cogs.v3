@@ -185,9 +185,10 @@ class WeeedBot(commands.Cog):
                 guild_font = await self.config.guild(action.guild).font()
                 font = self._get_font(guild_font)
                 prev_text_rendered = await self._get_rendered_text(prev_text, font, self.text_width)
-                # Blank panel if last author and this one are the same
+                # Blank panel if last author and this one are the same BUT check if the name is different
+                ## This is to cover proxied users via PluralKit or chat bridges
                 # Blank panel if last message height is over 3 lines tall
-                if action.author == messages[index-1].author or len(prev_text_rendered.split('\n')) > 3:
+                if (action.author == messages[index-1].author and action.author.name == messages[index-1].author.name) or len(prev_text_rendered.split('\n')) > 3:
                     # So in this case we want to only have one action
                     # in the panel instead of two because of either
                     # a monologue or a big text block
